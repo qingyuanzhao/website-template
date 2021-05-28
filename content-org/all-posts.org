@@ -1,0 +1,347 @@
+#+hugo_base_dir: ../
+
+* Post
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: post
+:END:
+
+** Migrating my website to Hugo + Academic + ox-hugo               :Workflow:
+:PROPERTIES:
+:EXPORT_FILE_NAME: migrating
+:EXPORT_DATE: 2020-06-13
+:END:
+
+Being stuck at home during the pandemic, as miserable as it is, actually
+helps me to redesign my working environment. One of the many outcomes
+is this new personal website powered by the [[https://sourcethemes.com/academic/][Academic theme]] for [[https://gohugo.io/][Hugo]]. I
+hope you will agree with me that it just looks awesome!
+
+For the rest of this blog post, I will explain the workflow to
+generate this website. I hope you may find it useful when designing
+your own website.
+
+{{% toc %}}
+
+*** The Hugo framework
+
+I admire the front-end web developers who still hand write HTML and
+CSS, but those are simply too much for me. If you are like me who just
+wants a personal website that can keep track of one's work, chances
+are you would like to use some [[https://en.wikipedia.org/wiki/Web_template_system#Static_site_generators][static site generator]]. When I was young
+and had my first encounter with the internet, [[https://en.wikipedia.org/wiki/Microsoft_FrontPage][Microsoft Frontpage]] and
+[[https://en.wikipedia.org/wiki/Adobe_Dreamweaver][Dreamweater]] were the most popular website generator.
+
+**** Static site generators
+
+But we are well past that time and there are many much better choices
+today. One great framework is the /Markdown/, a lightweight markup
+language that is used in [[https://guides.github.com/features/mastering-markdown/][GitHub readme pages]] and deeply integrated
+with statistical computing with the [[https://rmarkdown.rstudio.com/][R Markdown]]. Many static site
+generators (including [[https://jekyllrb.com/][Jekyll]] and [[https://gohugo.io/][Hugo]]) are able to automatically
+generate HTML codes from Markdown. This is a giant life-saver because
+Markdown is so much more readable.
+
+After some brief research I decided to use Hugo. Based on my reading,
+Hugo is renowned as "the world's fastest framework for building
+websites" and many developers were extremely happy about it. But for
+me, the killer was two extensions to Hugo: the Academic theme that
+implements many use features for academic researchers, and the
+[[https://ox-hugo.scripter.co/][ox-hugo]] backend that exports ~.org~ files straight to Hugo-compatible
+Markdown files. As an academic who already uses Emacs for most of the
+day-to-day work, these features are extremely convenient for me.
+
+Installing Hugo in Mac OS X is straightforward with [[https://brew.sh/][homebrew]]. Simply
+run
+
+#+BEGIN_SRC sh
+brew install hugo
+#+END_SRC
+
+**** Content management in Hugo
+
+Let's first take a look at how Hugo works. The most useful thing to
+know is Hugo's [[https://gohugo.io/content-management/organization/][organization of content source]]. In particular, the most
+important is the ~content~ folder, which contains all the Markdown
+files needed to generate the website. Here is a sample structure for
+the ~content~ folder from Hugo's official documentation (the base URL
+for this site is https://example.com/):
+
+#+BEGIN_EXAMPLE
+.
+└── content
+    └── about
+    |   └── index.md  // <- https://example.com/about/
+    ├── posts
+    |   ├── firstpost.md   // <- https://example.com/posts/firstpost/
+    |   ├── happy
+    |   |   └── ness.md  // <- https://example.com/posts/happy/ness/
+    |   └── secondpost.md  // <- https://example.com/posts/secondpost/
+    └── quote
+        ├── first.md       // <- https://example.com/quote/first/
+        └── second.md      // <- https://example.com/quote/second/
+#+END_EXAMPLE
+
+As you can see, each Markdown file in a directory under ~content~
+generates a webpage. Notice that ~_index.md~ has a special role in
+Hugo---it allows you to add front matter and content to the list
+pages. See [[https://gohugo.io/content-management/organization/#:~:text=_index.md%20has%20a%20special,in%20_index.md%20using%20the%20][here]] for more detail.
+
+**** Front matter in Hugo
+
+Another important concept is the /front matter/ of a Markdown file
+that contains metadata and options for the content. Some popular
+formats are TOML and YAML, which are much more human friendly than
+JSON. The following block contains the first few lines of this blog
+post. The front matter is the lines between ~+++~ (which means it is in TOML):
+
+#+BEGIN_SRC
++++
+title = "Migrating website to Hugo + Academic + ox-hugo"
+author = ["Qingyuan Zhao"]
+date = 2020-06-13
+tags = ["Workflow"]
+draft = false
++++
+
+Being stuck at home during the pandemic, as miserable as it is, actually
+helps me to redesign my working environment....
+#+END_SRC
+
+Apart from ~draft~ which is a option for the Academic theme, all other
+fields are standard for Hugo Markdown files.
+
+**** Hugo themes
+
+There are many [[https://themes.gohugo.io/][cool themes]] for Hugo that you can immediately use. As
+far as I know, they are useful in two ways. First, all the page
+styles are already pre-defined and many of them look awesome! Second,
+they also provide convenient templates for the front matter. As an
+example, I was initially considering to use the [[https://themes.gohugo.io/hugo-theme-jane/][Jane theme]] for this
+website. Similar to most other Hugo themes, it is really easy to
+install and get started; an example site can be found in its [[https://github.com/xianmin/hugo-theme-jane/tree/master/exampleSite][GitHub
+repository]], which generates this [[https://themes.gohugo.io/theme/hugo-theme-jane/][demo page]]. One thing I especially
+like about this theme is how it allows the reader to focus on the
+website content. Eventually I did not choose it because it is not
+powerful enough for all the different functions I needed, but I would
+highly recommend it if you just want to write blogs.
+
+**** From Markdown to HTML
+
+After creating all the Markdown content and selecting a theme, you can
+preview the website by running
+#+BEGIN_SRC sh
+hugo server
+#+END_SRC
+from the website directory. This builds the website and creates a
+local web server to
+host it. It generates a link (the default is http://localhost:1313/)
+which can be pasted into a web browser. In the background, the hugo
+server also detects any change to the content and updates the website
+automatically.
+
+# I find the ~--baseURL~ option for ~hugo server~ very useful. In my
+# Hugo config file, the default baseURL is set to the URL of my webpage
+# is http://www.statslab.cam.ac.uk/~qz280/. However, if I run ~hugo
+# server~ locally, the local root of my page becomes
+# http://localhost:1313/~qz280/ and all the relative file paths have an
+# extra ~/~qz280~. To fix it, remove this extra path in the local server
+# #+BEGIN_SRC sh
+# hugo server --baseURL http://localhost:1313/
+# #+END_SRC
+
+To public the website, first execute ~hugo~ from the website
+directory. This builds all the website pages in the ~public/~ folder
+within seconds. You can then upload that folder to an FTP server. For
+me, this amounts to
+#+BEGIN_SRC sh
+rsync -avz --delete public/ qz280@ssh.maths.cam.ac.uk:~/public_html
+#+END_SRC
+See [[https://gohugo.io/hosting-and-deployment/][here]] for other options to host and deploy your website.
+
+*** The Academic theme
+
+[[https://sourcethemes.com/academic/][Academic]] is a Hugo theme designed for academic researchers. To me, it
+is a website builder with just the right balance of complexity and
+flexibility. There are [[https://sourcethemes.com/academic/docs/install-locally/][many ways]] to install the Academic theme. I
+prefer the Git option by forking and cloning the [[https://github.com/sourcethemes/academic-kickstart][Academic Kickstart
+GitHub repository]]. You can then modify the content of the startup
+website and customize its styles.
+
+**** Content management in Academic
+
+Academic has a convenient content management system that is inherited
+from Hugo. This is currently how my website directory looks like:
+
+#+BEGIN_EXAMPLE
+├── assets
+│   ├── images
+│   └── scss
+├── config
+│   └── _default
+├── content
+│   ├── authors
+│   ├── home
+│   ├── news
+│   ├── post
+│   ├── project
+│   ├── publication
+│   ├── talk
+│   └── teaching
+├── content-org
+├── data
+│   ├── fonts
+│   └── themes
+├── resources
+│   └── _gen
+├── scripts
+├── static
+│   ├── admin
+│   ├── files
+│   └── img
+└── themes
+    └── academic
+#+END_EXAMPLE
+
+Unsurprisingly, the ~content~ folder contains all the Markdown files
+for website content. Most of its sub-directories correspond to a
+section of the webpage; in particular, ~home~ corresponds to the
+homepage of your website. Another unique folder is the ~authors~,
+which contains basic information about the website owner and all other
+authors (not needed for a personal website). The ~content-org~
+contains the org-mode files that generate some or all of the Markdown
+files in ~content~. I will go through this later on in the post, but
+it is of course not needed if you don't use org-mode. The ~config~
+folder contains all the important website settings offered by the
+Academic theme. See [[https://sourcethemes.com/academic/docs/get-started/][its documentation]] for more information.
+
+**** Organizing your work
+
+A nice feature of the Academic framework is the templates for
+publications, talks, projects, and many other academic-related
+objects. For example, I recently arXived a paper on the
+[[https://arxiv.org/abs/2004.07743][selection bias in COVID-19 studies]]. To add this new publication to my
+webpage, I can execute the following command
+
+#+BEGIN_SRC sh
+hugo new --kind publication publication/covid-19-bets
+#+END_SRC
+
+This generates a Markdown file ~publication/covid-19-bets/index.md~
+with YAML front matter from the publication template. I can then
+add all the relevant information about this publication to the
+Markdown file. This is how the beginning of this file looks like
+right now:
+
+#+BEGIN_EXAMPLE
+---
+# Documentation: https://sourcethemes.com/academic/docs/managing-content/
+
+title: "BETS: The dangers of selection bias in early analyses of the coronavirus disease (COVID-19) pandemic"
+authors: ["admin", "Phyllis Ju", "Sergio Bacallado", "Rajen Shah"]
+date: 2020-04-16
+doi: ""
+
+# Schedule page publish date (NOT publication's date).
+publishDate: 2020-06-13T21:28:45Z
+
+# Publication type.
+# Legend: 0 = Uncategorized; 1 = Conference paper; 2 = Journal article;
+# 3 = Preprint / Working Paper; 4 = Report; 5 = Book; 6 = Book section;
+# 7 = Thesis; 8 = Patent
+publication_types: ["3"]
+---
+#+END_EXAMPLE
+
+As you can see, the YAML fields record important metadata about the
+publication, which are used by Academic to automatically generate this
+nice [[/~qz280/publication/covid-19-bets/][webpage]]. This same workflow apples to talks, projects, and other
+[[https://sourcethemes.com/academic/docs/managing-content/][content types]] provided by Academic.
+
+**** Widget pages
+
+An important feature of Academic is its [[https://sourcethemes.com/academic/docs/page-builder/][widget pages]]. They are
+essentially custom page blocks that summarizes the information in the
+other pages. By default, the homepage is a widget page with many
+built-in widgets:
+
+#+BEGIN_SRC sh
+> ls content/home
+#+END_SRC
+#+BEGIN_EXAMPLE
+about.md           demo.md            hero.md            projects.md        tags.md
+accomplishments.md experience.md      index.md           skills.md          teaching.md
+contact.md         featured.md        people.md          slider.md          welcome.md
+#+END_EXAMPLE
+
+Personally, I prefer a clean homepage and would use separate section
+pages to organize the website. So [[/][my homepage]] only contains two
+widgets. Additionally, I created a custom widget page called [[/news/][news]] to
+make announcements and display new content.
+
+**** Customization in Academic
+
+The are several important files to modify when building your own
+website:
+
+- ~config/default/config.toml~ General configuration for Hugo.
+- ~config/default/params.toml~ Parameters for Academic.
+- ~config/default/menus.toml~ Configuration for the menu bar.
+- ~content/authors/admin/_index.md~ Information about the website
+  owner.
+
+Advanced customization can be found [[https://sourcethemes.com/academic/docs/customization/][here]].
+
+*** The ox-hugo exporter
+
+Finally, I use ~ox-hugo~, an Org mode to Hugo exporter, to generate blog
+posts and other text-rich content in this website. Since the beginning
+of my PhD, I have gradually become an heavy user of the extremely
+extensible text editor [[https://www.gnu.org/software/emacs/][Emacs]]. Previously I was mostly just using Emacs
+for writing /R/ and $\LaTeX$ with the amazing [[https://ess.r-project.org/][ESS]] and [[https://www.gnu.org/software/auctex/][AUCTeX]] modes. I
+saw great reviews of the [[https://orgmode.org/][Org mode]] before and started
+to appreciate it as my duties pile up after becoming an independent
+investigator. Org mode, as its name suggests, is a great way to keep
+oneself organized. Besides keeping notes and managing TODO lists,
+Org mode is also great for writing documents. It has powerful backends
+that can export ~.org~ files to LaTeX, HTML, Markdown, and other
+formats.
+
+A picture is worth a thousand words. This is the ~.org~ files that generates the blog
+post you are currently viewing.
+
+[[/~qz280/img/ox-hugo-example.png]]
+
+I followed the "one post per Org subtree" format [[https://ox-hugo.scripter.co/][recommended]] by the
+~ox-hugo~ author. So my ~content-org/~ folder has only one ~.org~
+file:
+#+BEGIN_SRC sh
+> ls content-org/
+#+END_SRC
+#+BEGIN_EXAMPLE
+all-posts.org
+#+END_EXAMPLE
+
+Each website section corresponds to a level-1
+heading (one *), and each blog post is contained under a level-2
+heading in Post. Each heading has some properties (and inherit the
+properties of its ancestors) that are exported to TOML or YAML front
+matter. If the ~EXPORT_FILE_NAME~ is specified, content under that
+heading is then exported to the corresponding section in the ~content~
+folder:
+
+#+BEGIN_SRC sh
+> ls content/post/
+#+END_SRC
+#+BEGIN_EXAMPLE
+_index.md      migrating.md   mr-software.md
+#+END_EXAMPLE
+
+To export all subtrees to Hugo Markdown, simply press ~C-c C-e H A~ in
+Emacs. The local Hugo server then picks up the content change and
+updates the website. More information about ~ox-hugo~ (including
+many advanced features that I am still learning) can be found in its
+[[https://ox-hugo.scripter.co/][online documentation]].
+
+So that's it for now! Feel free to leave a comment below. I will
+update this post if I make any major modification to this workflow in
+the future.

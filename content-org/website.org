@@ -1,0 +1,92 @@
+#+hugo_base_dir: ../
+* Home
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: home
+:END:
+
+** News
+:PROPERTIES:
+:EXPORT_FILE_NAME: news
+:EXPORT_HUGO_FRONT_MATTER_FORMAT: toml
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :widget blank :headless true :active true :weight 50
+:END:
+
+# :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :design.background '((gradient_start . "MidnightBlue") (gradient_end . "RoyalBlue") (text_color_light . true))
+# :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :design '((columns . "\"1\""))
+# :EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :design.spacing '((padding . ("20px" "0px" "20px" "0px")))
+
+- Announcement 1.
+
+
+
+* Teaching
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: teaching
+:END:
+
+** Teaching
+:PROPERTIES:
+:EXPORT_FILE_NAME: _index
+:END:
+
+
+** Course 1
+
+* Project
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: project
+:END:
+
+** Projects Home
+:PROPERTIES:
+:EXPORT_FILE_NAME: _index
+:END:
+
+** COVID-19                  :Infectious_Diseases:
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: project/covid-19
+:EXPORT_FILE_NAME: index
+:EXPORT_DATE: 2020-07-24
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :summary "Project page for some work on the COVID-19 pandemic."
+:END:
+
+* Students
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: students
+:END:
+
+
+** Students
+:PROPERTIES:
+:EXPORT_FILE_NAME: _index
+:END:
+
+- Name 1.
+- Name 2.
+
+
+* Links
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: links
+:END:
+
+
+** Useful links
+:PROPERTIES:
+:EXPORT_FILE_NAME: _index
+:END:
+
+
+*** Maths & Stats
+
+- [[https://tartarus.org/gareth/maths/tripos/][Tripos papers]] sorted by course.
+- [[https://www.maths.cam.ac.uk/opportunities/careers-for-mathematicians/summer-research-mathematics/summer-research-mathematics-cmp-and-research-cms][Research in the CMS]] for undergraduate students.
+- [[https://www.cs.virginia.edu/~robins/YouAndYourResearch.html][You and Your Research]] by Richard Hamming.
+
+*** Computing
+
+- [[https://r-pkgs.org/][R Packages: Organize, Test, Document, and Share Your Code]] by Hadley
+  Wickham.
+- [[https://atrebas.github.io/post/2019-03-03-datatable-dplyr/][A data.table and dplyr tour]] by Atrebas.
+- [[https://www.gnu.org/software/emacs/refcards/pdf/orgcard.pdf][Org-Mode Reference Card]].
+- [[http://tug.ctan.org/info/biblatex-cheatsheet/biblatex-cheatsheet.pdf][Biblatex Cheat Sheet]].
